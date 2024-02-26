@@ -36,6 +36,10 @@ const registerUser = async (req, res) => {
             return res.status(400).json("All fields are required...");
         }
 
+        if (name.length < 3 || email.length < 3 || password.length < 3) {
+            return res.status(400).json("All fields must be three characters");
+        }
+
         if (!validator.isEmail(email)) {
             return res.status(400).json("Email must be a valid email...");
         }
@@ -69,6 +73,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
+
         let user = await userModel.findOne({ email });
 
         if (!user) return res.status(400).json("Not found user");
